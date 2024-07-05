@@ -11,8 +11,8 @@ import lombok.ToString;
 @Setter
 public class item {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    public Long id;
-    public String title;
-    public Integer price;
+    private Long id;
+    private String title;
+    private Integer price;
 
 }

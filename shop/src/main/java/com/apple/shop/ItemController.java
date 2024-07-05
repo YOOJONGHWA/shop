@@ -4,6 +4,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,9 +20,23 @@ public class ItemController {
     String list(Model model) {
         List<item> result = itempRepository.findAll();
         model.addAttribute("items",result);
-        System.out.println(result);
-
         return "list.html";
+    }
+
+    @GetMapping("/write")
+    String write() {
+        return "write.html";
+    }
+
+
+    @PostMapping ("/add")
+    String addPost(@RequestParam String title,
+                   @RequestParam Integer price) {
+        item item = new item();
+        item.setTitle(title);
+        item.setPrice(price);
+        itempRepository.save(item);
+        return "redirect:/list";
     }
 
 }
