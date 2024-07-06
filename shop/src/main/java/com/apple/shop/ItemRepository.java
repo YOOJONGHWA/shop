@@ -3,6 +3,6 @@ package com.apple.shop;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface itemRepository extends JpaRepository<item,Long> {
+public interface ItemRepository extends JpaRepository<Item,Long> {
 
 }
