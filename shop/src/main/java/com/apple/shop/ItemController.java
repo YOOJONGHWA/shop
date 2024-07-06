@@ -1,8 +1,6 @@
 package com.apple.shop;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -14,11 +12,11 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class ItemController {
 
-    private final itemRepository itempRepository;
+    private final ItemService itemService;
 
     @GetMapping("/list")
     String list(Model model) {
-        List<item> result = itempRepository.findAll();
+        List<Item> result = itemService.findAll();
         model.addAttribute("items",result);
         return "list.html";
     }
@@ -30,23 +28,21 @@ public class ItemController {
 
 
     @PostMapping ("/add")
-    String addPost(@ModelAttribute item item)  {
-        itempRepository.save(item);
-
-
+    String addPost(String title, Integer price)  {
+        itemService.saveItem(title,price);
         return "redirect:/list";
     }
 
     @GetMapping("/detail/{id}")
     String detail(@PathVariable Long id, Model model) throws Exception {
 
-//        Optional<item> result = itempRepository.findById(id);
-//        if (result.isPresent()){
-//            model.addAttribute("data", result.get());
-//            return "detail.html";
-//        } else {
-//            return "redirect:/list";
-//        }
-        throw new Exception();
+        Optional<Item> result = itemService.findById(id);
+        if (result.isPresent()){
+            model.addAttribute("data", result.get());
+            return "detail.html";
+        } else {
+            return "redirect:/list";
+        }
+//        throw new Exception();
     }
 }
