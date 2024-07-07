@@ -1,6 +1,5 @@
-package com.apple.shop.Controller;
+package com.apple.shop.blog;
 
-import com.apple.shop.Entity.blog;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,7 +11,7 @@ import java.util.List;
 @AllArgsConstructor
 public class blogController {
 
-    private final com.apple.shop.Repository.blogRepository blogRepository;
+    private final com.apple.shop.blog.blogRepository blogRepository;
 
     @GetMapping("/blog")
     String list(Model model) {
