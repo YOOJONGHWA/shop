@@ -1,14 +1,13 @@
-package com.apple.shop.Controller;
+package com.apple.shop.item;
 
-import com.apple.shop.Entity.Item;
-import com.apple.shop.Repository.ItemRepository;
-import com.apple.shop.Service.ItemService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Controller
@@ -16,7 +15,7 @@ import java.util.Optional;
 public class ItemController {
 
     private final ItemService itemService;
-//    private final ItemRepository itemRepository;
+    private final ItemRepository itemRepository;
 
     @GetMapping("/list")
     String list(Model model) {
@@ -65,4 +64,17 @@ public class ItemController {
         itemService.editItem(id,title,price);
        return "redirect:/list";
     }
+
+    @GetMapping("/test")
+    String handleTestRequest() {
+        System.out.println("요청 '/test' 수신");
+        return "redirect:/list";
+    }
+
+    @DeleteMapping("/item")
+    ResponseEntity<String> deleteItem(@RequestParam Long id) {
+        itemRepository.deleteById(id);
+        return ResponseEntity.status(200).body("삭제완료");
+    }
+
 }

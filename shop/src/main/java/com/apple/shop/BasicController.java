@@ -1,4 +1,4 @@
-package com.apple.shop.Controller;
+package com.apple.shop;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;

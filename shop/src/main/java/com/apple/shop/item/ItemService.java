@@ -1,10 +1,7 @@
-package com.apple.shop.Service;
+package com.apple.shop.item;
 
-import com.apple.shop.Entity.Item;
-import com.apple.shop.Repository.ItemRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 import java.util.Optional;
@@ -56,4 +53,5 @@ public class ItemService {
             throw new IllegalArgumentException("해당 ID의 아이템을 찾을 수 없습니다: " + id);
         }
     }
+
 }
