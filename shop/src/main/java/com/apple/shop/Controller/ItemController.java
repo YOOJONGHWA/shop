@@ -1,5 +1,8 @@
-package com.apple.shop;
+package com.apple.shop.Controller;
 
+import com.apple.shop.Entity.Item;
+import com.apple.shop.Repository.ItemRepository;
+import com.apple.shop.Service.ItemService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,6 +16,7 @@ import java.util.Optional;
 public class ItemController {
 
     private final ItemService itemService;
+//    private final ItemRepository itemRepository;
 
     @GetMapping("/list")
     String list(Model model) {
@@ -44,5 +48,21 @@ public class ItemController {
             return "redirect:/list";
         }
 //        throw new Exception();
+    }
+    @GetMapping("/edit/{id}")
+    String editForm(@PathVariable Long id, Model model) {
+        Optional<Item> result = itemService.findById(id);
+        if (result.isPresent()) {
+            model.addAttribute("data", result.get());
+            return "edit.html";
+        }
+        else {
+            return "redirect:/list";
+        }
+    }
+    @PostMapping("/edit")
+    String editItem(Long id, String title, Integer price) {
+        itemService.editItem(id,title,price);
+       return "redirect:/list";
     }
 }
