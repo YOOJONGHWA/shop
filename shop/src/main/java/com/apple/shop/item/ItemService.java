@@ -1,6 +1,9 @@
 package com.apple.shop.item;
 
+import com.apple.shop.member.Member;
+import com.apple.shop.member.MemberRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -53,5 +56,10 @@ public class ItemService {
             throw new IllegalArgumentException("해당 ID의 아이템을 찾을 수 없습니다: " + id);
         }
     }
+
+    public void deleteById(Long id) {
+        itemRepository.deleteById(id);
+    }
+
 
 }
