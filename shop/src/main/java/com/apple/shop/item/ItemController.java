@@ -2,6 +2,7 @@ package com.apple.shop.item;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -15,7 +16,7 @@ import java.util.Optional;
 public class ItemController {
 
     private final ItemService itemService;
-    private final ItemRepository itemRepository;
+//    private final ItemRepository itemRepository;
 
     @GetMapping("/list")
     String list(Model model) {
@@ -73,7 +74,7 @@ public class ItemController {
 
     @DeleteMapping("/item")
     ResponseEntity<String> deleteItem(@RequestParam Long id) {
-        itemRepository.deleteById(id);
+        itemService.deleteById(id);
         return ResponseEntity.status(200).body("삭제완료");
     }
 

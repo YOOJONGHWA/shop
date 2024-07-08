@@ -19,9 +19,9 @@
         <span th:attr="data-id=${i.id}" class="delete">🗑️</span>
     </div>
 </div>
-<button class="btn">버튼</button>
+<a th:href="@{/signup}" class="button">회원가입</a>
 <script>
-    // 모든 삭제 버튼에 이벤트 리스너 추가
+
     document.querySelectorAll('.delete').forEach(button => {
         button.addEventListener('click', function() {
             const itemId = this.getAttribute('data-id');
