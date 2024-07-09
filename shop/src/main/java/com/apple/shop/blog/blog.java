@@ -1,5 +1,6 @@
 package com.apple.shop.blog;
 
+import com.apple.shop.BaseEntity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -14,9 +15,9 @@ import java.time.LocalDate;
 @ToString
 @Getter
 @Setter
-public class blog {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class blog extends BaseEntity {
+//    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    private Long id;
     private String title;
     private LocalDate date;
 }
