@@ -19,12 +19,43 @@ public class MemberService {
         if (memberRepository.findByUsername(username).isPresent()) {
             throw new IllegalArgumentException("이미 존재하는 사용자명입니다.");
         }
-        Member member = new Member();
-        member.setUsername(username);
-        var hash = passwordEncoder.encode(password);
-        member.setPassword(hash);
-        member.setDisplayName(displayName);
+
+        Member member = Member.builder()
+                .username(username)
+                .password(passwordEncoder.encode(password))
+                .displayName(displayName)
+                .build();
+
         memberRepository.save(member);
     }
 
+
+    public MemberDto findById(long id) {
+        var optionalMember = memberRepository.findById(id);
+        if (optionalMember.isPresent()) {
+            var member = optionalMember.get();
+            var memberDto = new MemberDto();
+            memberDto.setUsername(member.getUsername());
+            memberDto.setDisplayName(member.getDisplayName());
+            return memberDto;
+        }
+        else {
+            return null;
+        }
+    }
+
+    public MemberDto findById2(long id) {
+        var optionalMember = memberRepository.findById(id);
+        if (optionalMember.isPresent()) {
+            var member = optionalMember.get();
+            var memberDto = new MemberDto();
+            memberDto.setUsername(member.getUsername());
+            memberDto.setDisplayName(member.getDisplayName());
+            memberDto.setId(member.getId());
+            return memberDto;
+        }
+        else {
+            return null;
+        }
+    }
 }

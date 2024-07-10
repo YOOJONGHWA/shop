@@ -1,8 +1,8 @@
 package com.apple.shop.member;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 public class MemberController {
 
     private final MemberService memberService;
+    private final MemberRepository memberRepository;
 
     @GetMapping("/test2")
     String deleteItem() {
@@ -54,5 +55,26 @@ public class MemberController {
         return "index.html";
     }
 
+    @GetMapping("/user/1")
+    public ResponseEntity<MemberDto> getUser() {
+        MemberDto memberDto = memberService.findById(1L);
+        if (memberDto != null) {
+            return ResponseEntity.ok(memberDto);
+        }
+        else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @GetMapping("v2/user/1")
+    public ResponseEntity<MemberDto> getUser2() {
+        MemberDto memberDto = memberService.findById2(1L);
+        if (memberDto != null) {
+            return ResponseEntity.ok(memberDto);
+        }
+        else {
+            return ResponseEntity.notFound().build();
+        }
+    }
 
 }
