@@ -19,8 +19,7 @@
         <span th:attr="data-id=${i.id}" class="delete">🗑️</span>
     </div>
 </div>
-<a href="/list/page/1">1번페이지</a>
-<a href="/list/page/2">2번페이지</a>
+<div id="pageButtons"></div>
 
 
 <a th:href="@{/signup}" class="button">회원가입</a>
@@ -54,6 +53,26 @@
             // 오류 처리 로직 추가
         });
     }
+
+
+    /*<![CDATA[*/
+    const totalPages = /*[[${totalPages}]]*/ 1; // Thymeleaf 템플릿 문법을 사용하여 totalPages 변수를 가져옵니다.
+    const currentPage = /*[[${currentPage}]]*/ 1; // Thymeleaf 템플릿 문법을 사용하여 currentPage 변수를 가져옵니다.
+
+    const pageButtonsContainer = document.getElementById('pageButtons');
+    for (let page = 0; page <= totalPages; page++) {
+        const button = document.createElement('a');
+        button.textContent = ` ${page + 1}페이지 `;
+        button.href = `/list/page/${page}`; // 각 페이지에 맞는 URL로 변경해야 합니다.
+        button.style.marginRight = '10px'; // 버튼 사이 여백 설정
+        if (page === currentPage) {
+            button.classList.add('current-page'); // 현재 페이지 버튼에 스타일링을 추가할 수 있습니다.
+        }
+        pageButtonsContainer.appendChild(button);
+    }
+    /*]]>*/
+</script>
+
 </script>
 </body>
 </html>

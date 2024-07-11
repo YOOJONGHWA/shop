@@ -90,13 +90,13 @@ public class ItemController {
     }
 
     @GetMapping("/list/page/{page}")
-    public String getListPage(Model model, @PathVariable("page") Integer page) {
+    String getListPage(Model model, @PathVariable Integer page) {
         int pageSize = 5;
         Page<Item> result = itemService.findPageBy(page, pageSize);
         model.addAttribute("items", result.getContent());
         model.addAttribute("totalPages", result.getTotalPages());
+        model.addAttribute("currentPage", page);
 
         return "list.html";
     }
-
 }
