@@ -1,14 +1,19 @@
 package com.apple.shop.item;
 
+import com.apple.shop.comment.Comment;
+import com.apple.shop.comment.CommentRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -19,11 +24,13 @@ public class ItemController {
 
     private final ItemService itemService;
     private final ItemRepository itemRepository;
+    private final CommentRepository commentRepository;
 
     @GetMapping("/list")
     String list(Model model) {
         List<Item> result = itemService.findAll();
-        model.addAttribute("items",result);
+        System.out.println(result);
+        model.addAttribute("items", result);
         return "list.html";
     }
 
@@ -41,6 +48,8 @@ public class ItemController {
 
     @GetMapping("/detail/{id}")
     String detail(@PathVariable Long id, Model model) throws Exception {
+        List<Comment> result2 = commentRepository.findByParentId(id);
+        model.addAttribute("comment", result2);
 
         Optional<Item> result = itemService.findById(id);
         if (result.isPresent()){
@@ -80,14 +89,14 @@ public class ItemController {
         return ResponseEntity.status(200).body("삭제완료");
     }
 
-    @GetMapping("/list/page/{num}")
-    String getListPage(Model model, @PathVariable Integer num) {
-        Page<Item> result = itemService.findPageBy(PageRequest.of(num - 1,5));
-        model.addAttribute("items",result);
-        model.addAttribute("totalPages",result.getTotalPages());
+    @GetMapping("/list/page/{page}")
+    public String getListPage(Model model, @PathVariable("page") Integer page) {
+        int pageSize = 5;
+        Page<Item> result = itemService.findPageBy(page, pageSize);
+        model.addAttribute("items", result.getContent());
+        model.addAttribute("totalPages", result.getTotalPages());
+
         return "list.html";
     }
-
-
 
 }
