@@ -19,6 +19,16 @@
         <span th:attr="data-id=${i.id}" class="delete">🗑️</span>
     </div>
 </div>
+<!-- Pagination links -->
+<div class="pagination">
+    <ul>
+        <li th:each="pageNum : ${#numbers.sequence(1, totalPages)}">
+            <a th:href="@{/list/page/{pageNum}(pageNum=${pageNum})}"
+               th:text="${pageNum}">
+            </a>
+        </li>
+    </ul>
+</div>
 <a th:href="@{/signup}" class="button">회원가입</a>
 <script>
 

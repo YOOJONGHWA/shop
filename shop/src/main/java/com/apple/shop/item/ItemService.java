@@ -3,6 +3,8 @@ package com.apple.shop.item;
 import com.apple.shop.member.Member;
 import com.apple.shop.member.MemberRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -62,4 +64,7 @@ public class ItemService {
     }
 
 
+    public Page<Item> findPageBy(PageRequest pageRequest) {
+        return itemRepository.findPageBy(pageRequest);
+    }
 }
