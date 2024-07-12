@@ -70,4 +70,7 @@ public class ItemService {
         return itemRepository.findAll(PageRequest.of(page, size));
     }
 
+    public Object rawQuery(String searchText) {
+        return itemRepository.rawQuery(searchText);
+    }
 }

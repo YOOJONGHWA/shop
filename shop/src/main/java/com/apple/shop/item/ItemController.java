@@ -99,4 +99,12 @@ public class ItemController {
 
         return "list.html";
     }
+
+    @PostMapping("/search")
+    String postSearch(String searchText, Model model) {
+        var result = itemService.rawQuery(searchText);
+        model.addAttribute("searchText", result);
+        return "list.html";
+    }
+
 }
