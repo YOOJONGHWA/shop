@@ -10,6 +10,7 @@ import lombok.ToString;
 @ToString
 @Getter
 @Setter
+@Table(indexes = @Index(columnList = "title", name = "search"))
 public class Item  extends BaseEntity {
 //    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
 //    private Long id;

@@ -22,10 +22,30 @@
         <p th:text="${i.displayName}">7억</p>
     </div>
 </div>
+<div class="commentButtons">ss</div>
 <form action="/comment" method="POST">
     <input name="content">
     <input name="parent" th:value="${data.id}" style="display : none">
     <button>전송</button>
 </form>
+<script>
+
+    /*<![CDATA[*/
+ const totalPages = /*[[${totalPages}]]*/ 1; // Thymeleaf 템플릿 문법을 사용하여 totalPages 변수를 가져옵니다.
+ const currentPage = /*[[${currentPage}]]*/ 1; // Thymeleaf 템플릿 문법을 사용하여 currentPage 변수를 가져옵니다.
+
+ const pageButtonsContainer = document.getElementById('pageButtons');
+ for (let page = 0; page <= totalPages; page++) {
+     const button = document.createElement('a');
+     button.textContent = ` ${page + 1}페이지 `;
+     button.href = `/list/page/${page}`; // 각 페이지에 맞는 URL로 변경해야 합니다.
+     button.style.marginRight = '10px'; // 버튼 사이 여백 설정
+     if (page === currentPage) {
+         button.classList.add('current-page'); // 현재 페이지 버튼에 스타일링을 추가할 수 있습니다.
+     }
+     pageButtonsContainer.appendChild(button);
+ }
+ /*]]>*/
+</script>
 </body>
 </html>
