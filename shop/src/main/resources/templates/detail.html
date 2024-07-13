@@ -16,13 +16,18 @@
     <h4 th:text="${data.title}">금도금 바지</h4>
     <p th:text="${data.price + '원'}">7억</p>
 </div>
+<form action="/sales" method="POST">
+    <input name="title" th:value="${data.title}">
+    <input name="price" th:value="${data.price}">
+    <input name="count" placeholder="수량">
+    <button>주문하기</button>
+</form>
 <div class="card" th:each="i : ${comment}">
     <div>
         <p th:text="${i.content}">7억</p>
         <p th:text="${i.displayName}">7억</p>
     </div>
 </div>
-<div class="commentButtons">ss</div>
 <form action="/comment" method="POST">
     <input name="content">
     <input name="parent" th:value="${data.id}" style="display : none">

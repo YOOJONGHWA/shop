@@ -1,8 +1,6 @@
 package com.apple.shop.comment;
 
-import com.apple.shop.BaseEntity;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -11,8 +9,10 @@ import lombok.ToString;
 @ToString
 @Getter
 @Setter
-public class Comment extends BaseEntity {
-
+public class Comment {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     private String displayName;
     @Column(length = 100)
     private String content;
