@@ -1,9 +1,11 @@
 package com.apple.shop.member;
 
-import com.apple.shop.BaseEntity;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
+import com.apple.shop.sales.Sales;
+import jakarta.persistence.*;
 import lombok.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @ToString
@@ -12,10 +14,17 @@ import lombok.*;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Member extends BaseEntity {
+public class Member  {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     @Column(unique = true)
     private String username;
     private String password;
     private String displayName ;
+
+    @ToString.Exclude
+    @OneToMany(mappedBy = "member")
+    private List<Sales> sales = new ArrayList<>();
 
 }
