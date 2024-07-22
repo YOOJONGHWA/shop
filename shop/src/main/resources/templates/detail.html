@@ -1,56 +1,107 @@
-<!doctype html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<!DOCTYPE html>
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+    <meta charset="UTF-8"/>
+    <title>Sample Payment</title>
     <link href="/main.css" rel="stylesheet">
 </head>
 <body>
+<!-- 네비게이션 바 삽입 -->
 <div th:replace="~{ nav.html::navbar }"></div>
+
+<!-- 상세페이지 정보 표시 -->
 <div class="detail">
     <h4>상세페이지</h4>
     <img src="https://placehold.co/300">
     <h4 th:text="${data.title}">금도금 바지</h4>
     <p th:text="${data.price + '원'}">7억</p>
 </div>
-<form action="/sales" method="POST">
-    <input name="title" th:value="${data.title}">
-    <input name="price" th:value="${data.price}">
-    <input name="count" placeholder="수량">
-    <button>주문하기</button>
+
+<!-- 상품 주문 폼 -->
+<form>
+    <input name="title" id="title" th:value="${data.title}">
+    <input name="price" id="price" th:value="${data.price}">
+    <input name="count" id="count" placeholder="수량">
 </form>
+<!-- 결제하기 버튼 -->
+<button onclick="requestPay()">결제하기</button>
+
+<!-- 댓글 목록 표시 -->
 <div class="card" th:each="i : ${comment}">
     <div>
-        <p th:text="${i.content}">7억</p>
-        <p th:text="${i.displayName}">7억</p>
+        <p th:text="${i.content}">댓글 내용</p>
+        <p th:text="${i.displayName}">작성자 이름</p>
     </div>
 </div>
+
+<!-- 댓글 작성 폼 -->
 <form action="/comment" method="POST">
     <input name="content">
     <input name="parent" th:value="${data.id}" style="display : none">
-    <button>전송</button>
+    <button type="submit">전송</button>
 </form>
-<script>
 
-    /*<![CDATA[*/
- const totalPages = /*[[${totalPages}]]*/ 1; // Thymeleaf 템플릿 문법을 사용하여 totalPages 변수를 가져옵니다.
- const currentPage = /*[[${currentPage}]]*/ 1; // Thymeleaf 템플릿 문법을 사용하여 currentPage 변수를 가져옵니다.
+<!-- jQuery -->
+<script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+<!-- iamport.payment.js -->
+<script type="text/javascript" src="https://cdn.iamport.kr/js/iamport.payment-1.2.0.js"></script>
+<script th:inline="javascript">
+    var IMP = window.IMP;
+    IMP.init("imp55718314");
 
- const pageButtonsContainer = document.getElementById('pageButtons');
- for (let page = 0; page <= totalPages; page++) {
-     const button = document.createElement('a');
-     button.textContent = ` ${page + 1}페이지 `;
-     button.href = `/list/page/${page}`; // 각 페이지에 맞는 URL로 변경해야 합니다.
-     button.style.marginRight = '10px'; // 버튼 사이 여백 설정
-     if (page === currentPage) {
-         button.classList.add('current-page'); // 현재 페이지 버튼에 스타일링을 추가할 수 있습니다.
-     }
-     pageButtonsContainer.appendChild(button);
- }
- /*]]>*/
+    function requestPay() {
+        const title = $('#title').val().trim();
+        const price = parseInt($('#price').val().trim());
+        const count = parseInt($('#count').val().trim());
+        // 주문 정보 객체 생성
+        IMP.request_pay({
+            pg: "html5_inicis",
+            pay_method: "card",
+            name: title,
+            count: count,
+            amount: price * count,  // 가격 * 수량
+            buyer_email: "sola120731@gmail.com",
+            buyer_name: "홍길동",
+            buyer_tel: "010-4242-4242",
+            buyer_addr: "서울특별시 강남구 신사동",
+            buyer_postcode: "01181"
+        }, function(rsp) {
+            if (rsp.success) {
+                // fetch를 사용한 AJAX 요청
+                fetch('/sales', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        title : document.querySelector('#title').value,
+                        count : document.querySelector('#count').value,
+                        price : document.querySelector('#price').value * document.querySelector('#count').value
+                    })
+                })
+                    .then(function(response) {
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok');
+                        }
+                        return response.json();
+                    })
+                    .then(function(data) {
+                        // 가맹점 서버 결제 API 성공시 로직
+                        alert("결제가 성공적으로 완료되었습니다.");
+                    })
+                    .catch(function(error) {
+                        // 가맹점 서버 결제 API 실패시 로직
+                        console.error(title + " " + count + " " + price);
+                        alert("결제는 성공했지만 서버 처리에 실패했습니다.");
+                        console.error('Error:', error);
+                    });
+            } else {
+                alert("결제에 실패하였습니다. 에러 내용: " + rsp.error_msg);
+                console.log(rsp);
+            }
+        });
+    }
 </script>
+
 </body>
 </html>

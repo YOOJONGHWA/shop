@@ -15,6 +15,7 @@ public class SalesService {
 
     private final SalesRepository salesRepository;
 
+
     public void save(String title, Integer price, Integer count, Authentication auth) {
         // 수량 입력 여부 검증
         if (count == null) {
@@ -60,4 +61,6 @@ public class SalesService {
                 })
                 .collect(Collectors.toList());
     }
+
+
 }
